@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.urls import path, include
 
+import account.views
 import account.url
 
 urlpatterns = [
-    path('', include('account.url')),
+    path('', account.views.test, name="mainPage"),
     path('account/', include(account.url.urlpatterns), name="account"),
 ]
