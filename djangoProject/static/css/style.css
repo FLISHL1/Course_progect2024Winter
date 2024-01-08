@@ -1,0 +1,28 @@
+body{
+    margin: 0;
+    background-image: url("/static/img/ManyCube.png");
+    background-size: 63%;
+    background-repeat: no-repeat;
+    background-color: #0C011C;
+    background-position: right top;
+
+}
+
+main{
+    min-height: 100vh;
+}
+
+.logoImage{
+    width: calc(100%/3.282);
+    margin: auto;
+}
+.logoText{
+    width: calc(100%/2.282);
+    margin: auto;
+}
+
+
+.mainPage{
+    display: flex;
+    margin-top: 125px;
+}

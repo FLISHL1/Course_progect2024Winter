@@ -1,0 +1,48 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+    <link href="{% static "css/account/style.css" %}" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{{ message }}
+<form method="POST">
+
+    {% csrf_token %}
+{% if title == "Регистрация" %}
+    <h1>Регистрация</h1>
+{% else %}
+    <h1>Авторизация</h1>
+{% endif %}
+    <label for="login">
+        Логин<br>
+        <input type="text" name="login" class="form_field">
+    </label>
+    <label for="password">
+        Пароль<br>
+        <input type="password" name="password" class="form_field">
+    </label>
+    {% if title == "Регистрация" %}
+        <label for="email">
+            Почта<br>
+            <input type="email" name="email" class="form_field">
+        </label>
+        <label for="first_name">
+            Имя<br>
+            <input type="text" name="first_name" class="form_field">
+        </label>
+        <label for="last_name">
+            Фамилия<br>
+            <input type="text" name="last_name" class="form_field"> 
+        </label>
+    {% endif %}
+    {% if title == "Регистрация" %}
+        <input type="submit" name="submit" value="Зарегистрироваться" class="btn_submit">
+
+    {% else %}
+        <input type="submit" name="submit" value="Войти" class="btn_submit">
+        <label class="register">Нету аккаунта? <a class="register_link" href="{% url "signUp" %}" >Зарегистрироваться</a></label>
+    {% endif %}
+</form>
+{% endblock %}

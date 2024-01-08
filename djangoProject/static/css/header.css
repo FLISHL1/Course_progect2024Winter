@@ -1,0 +1,93 @@
+body{
+    margin: 0;
+    background-image: url("/static/img/ManyCube.png");
+    background-size: 63%;
+    background-repeat: no-repeat;
+    background-color: #0C011C;
+    background-position: right top;
+
+}
+header {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% / 6.5);
+    background: linear-gradient(270deg, #242775 0%, rgba(36, 39, 117, 0.00) 100%, rgba(36, 39, 117, 0.50) 100%);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0px 0px 23px #FFF;
+    font-family: 'Michroma', sans-serif;
+    font-size: 43px;
+}
+
+a:hover {
+}
+
+.nav-link {
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0px 0px 23px #FFF;
+    font-family: 'Michroma', sans-serif;
+    font-size: 43px;
+    margin: auto;
+}
+
+.nav-link:hover {
+    color: #049b9b;
+}
+
+.icon_header {
+    width: 124px;
+    margin: auto 15px;
+}
+
+.nav {
+    margin: auto auto auto 0;
+}
+
+
+.btn {
+    margin: auto 0 auto auto;
+    display: flex;
+    flex-direction: row;
+
+}
+.username{
+    color:white;
+    margin: auto;
+}
+@media (device-width <= 425px) {
+    .nav-link {
+        color: #FFF;
+        text-align: center;
+        text-shadow: 0px 0px 23px #FFF;
+        font-family: 'Michroma', sans-serif;
+        font-size: 70px;
+        margin: auto;
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: calc(100% / 6.5);
+        background: linear-gradient(270deg, #242775 0%, rgba(36, 39, 117, 0.00) 100%, rgba(36, 39, 117, 0.50) 100%);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    }
+
+    .nav {
+        margin: auto auto auto auto;
+        flex-direction: column;
+    }
+
+    .icon_header {
+        width: 124px;
+        margin: auto auto;
+    }
+    .btn {
+    margin: auto;
+    display: block;
+
+}
+}
