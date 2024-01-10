@@ -1,0 +1,86 @@
+.form_field {
+    margin: 10px;
+    border-radius: 5px;
+    background: #FFF;
+    width: 386px;
+    height: 47px;
+    font-size: 25px;
+}
+
+form {
+    border-radius: 12px;
+    background: rgba(36, 39, 117, 0.96);
+    box-shadow: 3px -3px 10px 0px rgba(0, 0, 0, 0.29), 14px -11px 18px 0px rgba(0, 0, 0, 0.26), 31px -25px 24px 0px rgba(0, 0, 0, 0.15), 56px -44px 29px 0px rgba(0, 0, 0, 0.04), 87px -69px 31px 0px rgba(0, 0, 0, 0.01);
+    margin: auto auto auto auto;
+    display: flex;
+    flex-direction: row;
+    color: #FFF;
+    text-shadow: 0px 0px 7px #FFF;
+    text-align: center;
+    font-family: 'Michroma', sans-serif;
+    padding: 10px;
+}
+
+label {
+    font-size: 30px;
+}
+
+h1 {
+
+    font-size: 43px;
+    margin: auto+20px;
+}
+
+main {
+    display: flex;
+}
+
+.btn_submit {
+    background-color: white;
+    border-radius: 30px;
+    font-size: 30px;
+    width: fit-content;
+    padding: 4px;
+    margin: 25px auto ;
+    border: none;
+    transition: color 200ms, background-color 200ms;
+}
+
+.btn_submit:hover {
+    background-color: #049b9b;
+    color: white;
+}
+
+.register{
+    font-size: 20px;
+    margin: auto auto 21px auto;
+}
+.register_link
+{
+    text-decoration: none;
+    color:white;
+    transition: color 200ms;
+}
+
+.register_link:hover
+{
+    color:#049b9b;
+
+}
+main{
+    height: 90vh;
+}
+
+.block_left{
+    display: flex;
+    flex-direction: column;
+}
+.logo{
+    width: 25%;
+
+}
+.block_img{
+    display: flex;
+    flex-direction: row;
+    margin: auto auto auto 25px;
+}

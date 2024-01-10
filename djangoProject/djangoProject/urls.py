@@ -20,6 +20,6 @@ import account.views
 import account.url
 
 urlpatterns = [
-    path('', account.views.test, name="mainPage"),
+    path('', account.views.index, name="mainPage"),
     path('account/', include(account.url.urlpatterns), name="account"),
 ]

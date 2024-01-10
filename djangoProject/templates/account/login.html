@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block head %}
-    <link href="{% static "css/account/style.css" %}" type="text/css" rel="stylesheet">
+    <link href="{% static "css/account/login.css" %}" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block content %}
 {{ message }}
@@ -17,11 +17,11 @@
 {% endif %}
     <label for="login">
         Логин<br>
-        <input type="text" name="login" class="form_field">
+        <input type="text" name="login" class="form_field" required>
     </label>
     <label for="password">
         Пароль<br>
-        <input type="password" name="password" class="form_field">
+        <input type="password" name="password" class="form_field" required>
     </label>
     {% if title == "Регистрация" %}
         <label for="email">
@@ -30,11 +30,11 @@
         </label>
         <label for="first_name">
             Имя<br>
-            <input type="text" name="first_name" class="form_field">
+            <input type="text" name="first_name" class="form_field" required>
         </label>
         <label for="last_name">
             Фамилия<br>
-            <input type="text" name="last_name" class="form_field"> 
+            <input type="text" name="last_name" class="form_field" required> 
         </label>
     {% endif %}
     {% if title == "Регистрация" %}

@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+    <link href="{% static "css/account/profile.css" %}" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block account_action %}
+            <div class="btn"><a class="nav-link" href="{% url "logout" %}">Выйти</a></div>
+{% endblock %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="block_left">
+            <label for="login">
+                Логин<br>
+                <input type="text" class="form_field" name="login" value="{{ user.username }}" required>
+            </label>
+            <label for="first_name">
+                Имя<br>
+                <input type="text" class="form_field" name="first_name" value="{{ user.first_name }}" required>
+            </label>
+            <label for="last_name">
+                Фамилия<br>
+                <input type="text" class="form_field" name="last_name" value="{{ user.last_name }}" required>
+            </label>
+            <label for="email">
+                Почта<br>
+                <input type="text" class="form_field" name="email" value="{{ user.email }}">
+            </label>
+            <div>
+            <input type="submit" value="Сохранить" class="btn_submit">
+        </div>
+        </div>
+        <div class="block_left">
+            <div class="block_img">
+                <img src="{% static "img/logo.png" %}" class="logo">
+                <h1 class="username">{{ user.username }},<br>{{ user.last_name }} {{ user.first_name }}</h1>
+            </div>
+            <div>
+                <label for="old_password">
+                    Старый пароль<br>
+                    <input type="password" class="form_field" name="old_password">
+                </label>
+                <label for="new_password">
+                    Новый пароль<br>
+                    <input type="text" class="form_field" name="new_password">
+                </label>
+            </div>
+        </div>
+        
+    </form>
+{% endblock %}

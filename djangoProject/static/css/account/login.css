@@ -10,6 +10,7 @@
 form {
     border-radius: 12px;
     background: rgba(36, 39, 117, 0.96);
+    box-shadow: 3px -3px 10px 0px rgba(0, 0, 0, 0.29), 14px -11px 18px 0px rgba(0, 0, 0, 0.26), 31px -25px 24px 0px rgba(0, 0, 0, 0.15), 56px -44px 29px 0px rgba(0, 0, 0, 0.04), 87px -69px 31px 0px rgba(0, 0, 0, 0.01);
     margin: auto auto auto auto;
     display: flex;
     flex-direction: column;
@@ -37,7 +38,8 @@ main {
     background-color: white;
     border-radius: 30px;
     font-size: 30px;
-    width: 40%;
+    width: fit-content;
+    padding: 4px;
     margin: 25px auto ;
     border: none;
     transition: color 200ms, background-color 200ms;

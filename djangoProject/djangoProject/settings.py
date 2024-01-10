@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,6 @@ ALLOWED_HOSTS = ["192.168.1.23", "localhost"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -81,7 +81,7 @@ DATABASES = {
         "NAME": "testcourse",
         "USER": "user",
         "PASSWORD": "user",
-        "HOST": "192.168.1.26",
+        "HOST": "",
         "PORT": "3306",
     }
 }
