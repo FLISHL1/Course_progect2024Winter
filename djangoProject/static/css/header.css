@@ -1,6 +1,7 @@
 body{
     margin: 0;
     background-image: url("/static/img/ManyCube.png");
+    background-blend-mode: exclusion;
     background-size: 63%;
     background-repeat: no-repeat;
     background-color: #0C011C;
@@ -56,6 +57,19 @@ a:hover {
     color:white;
     margin: auto;
 }
+
+.block-flash{
+    margin: 15px;
+}
+.flash{
+    font-size: 25px;
+    background-color: rgba(112, 128, 144, 0.55);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px;
+
+}
+
 @media (device-width <= 425px) {
     .nav-link {
         color: #FFF;

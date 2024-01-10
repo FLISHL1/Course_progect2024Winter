@@ -30,12 +30,31 @@
             <a class="nav-link" href="">О нас</a>
         </li>
     </ul>
-    {% if user.is_authenticated %}
-        
-        <div class="btn"><label class="username">{{ user.username }}</label><a class="nav-link" href="{% url "logout" %}">Выйти</a></div>
-    {% else %}
-    <div class="btn"><a class="nav-link" href="{% url "login" %}">Войти</a></div>
-    {% endif %}
+    {% block account_action %}
+        {% if user.is_authenticated %}
+
+            <div class="btn"><label class="username">{{ user.username }}</label><a class="nav-link"
+                                                                                   href="{% url "profile" %}">Профиль</a>
+            </div>
+        {% else %}
+            <div class="btn"><a class="nav-link" href="{% url "login" %}">Войти</a></div>
+        {% endif %}
+    {% endblock %}
+    <div class="block-flash" style="display: flex;
+                flex-direction: column;
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                margin-right: 10px;
+                text-align:center;">
+        {% for message in messages %}
+            <div class="flash">
+                <span class="closebtn" onclick="">&times;</span>
+                {{ message }}
+            </div>
+
+        {% endfor %}
+    </div>
 </header>
 <main>
     {% block content %}
@@ -46,4 +65,24 @@
     {% endblock %}
 </main>
 </body>
+<script>
+
+    var close = document.getElementsByClassName("flash");
+    setTimeout(function () {
+        var close1 = document.getElementsByClassName("flash");
+
+        for (var i = 0; i < close1.length; i++) {
+            close1[i].style.display = "none"
+
+        }
+    }, 5000);
+    for (var i = 0; i < close.length; i++) {
+
+        close[i].onclick = function () {
+            this.style.display = "none"
+
+        }
+    }
+
+</script>
 </html>
