@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from account.sign_up_form import SignUpForm
 from django.contrib import messages  # import messages
 
 
@@ -65,7 +64,8 @@ def profile(request):
         user = request.user
         if old_password != "":
             if user.check_password(old_password):
-                user.set_password(new_password)
+                if new_password != "":
+                    user.set_password(new_password)
             else:
                 messages.info(request, "Старый пароль не совпадает!")
 
@@ -83,3 +83,5 @@ def profile(request):
 
 def index(request):
     return render(request, 'main.html')
+
+
