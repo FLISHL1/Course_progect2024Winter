@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "account.apps.AccountConfig"
+    "account.apps.AccountConfig",
+    "clusters.apps.ClustersConfig",
+    "django_apscheduler"
 ]
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rest.settings')
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,7 +84,7 @@ DATABASES = {
         "NAME": "testcourse",
         "USER": "user",
         "PASSWORD": "user",
-        "HOST": "",
+        "HOST": "192.168.1.26",
         "PORT": "3306",
     }
 }

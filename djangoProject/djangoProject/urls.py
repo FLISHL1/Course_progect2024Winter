@@ -17,9 +17,10 @@ Including another URLconf
 from django.urls import path, include
 
 import account.views
-import account.url
-
+import account.url as acc
+import clusters.url as cluster
 urlpatterns = [
     path('', account.views.index, name="mainPage"),
-    path('account/', include(account.url.urlpatterns), name="account"),
+    path('account/', include(acc.urlpatterns), name="account"),
+    path('cluster/', include(cluster.urlpatterns), name="cluster"),
 ]
