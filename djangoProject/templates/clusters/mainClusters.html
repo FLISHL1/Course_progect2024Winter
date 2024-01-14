@@ -1,0 +1,164 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+    <link href="{% static "css/clusters/cluster.css" %}" type="text/css" rel="stylesheet">
+
+{% endblock %}
+{% comment %}{% block account_action %}
+            <div class="btn"><a class="nav-link" href="{% url "logout" %}">Выйти</a></div>
+{% endblock %}{% endcomment %}
+{% block content %}
+    <div class="block-btn">
+        <select class="form-select" aria-label="Default select example" id="choosing_cluster">
+            <option value="0" selected>Выберите кластер</option>
+            {% for i in clusters %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+            {#            <option value="1">One</option>#}
+            {#            <option value="2">Two</option>#}
+            {#            <option value="3">Three</option>#}
+        </select>
+        <button class="btn" id="increased">Отобразить выбросы</button>
+        <div>
+            <label class="label-cluster">Выбранный кластер: </label>
+            <label class="label-cluster" id="in_cluster"></label>
+        </div>
+    </div>
+
+    <div class="block-data">
+        <table class="table-data">
+            <thead>
+            <tr>
+                <th class="table-head">Тип объекта</th>
+                <th class="table-head">Наименование</th>
+                <th class="table-head">Адрес</th>
+                <th class="table-head">Контактные данные</th>
+            </tr>
+            </thead>
+
+            <tbody id="table-body">
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#increased').click(function () {
+                $("#table-body").empty();
+
+                $.ajax({
+                    url: 'select_cluster',
+                    type: 'GET',
+                    data: {"id_cluster": -1},
+                    success: (data) => {
+                        $("#in_cluster").empty().append("выбросы");
+                        for (i = 0; i < data.objects.length; i++) {
+                            $("#table-body").append(`
+                                <tr class="table-row">
+                                    <td >
+                                        <p>${data.objects[i].type}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].name}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].address}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].phone_number}</p>
+                                    </td>
+                                </tr>
+                                `)
+                        }
+                    },
+                    error: (error) => {
+                        alert(error);
+                    }
+                });
+            });
+            $('#choosing_cluster').change(function () {
+                $("#table-body").empty();
+                $("#in_cluster").empty()
+                if ($('#choosing_cluster').val() !== "0") {
+                    $.ajax({
+                        url: 'select_cluster',
+                        type: 'GET',
+                        data: {"id_cluster": $("#choosing_cluster").val()},
+                        success: (data) => {
+                            $("#in_cluster").append($("#choosing_cluster").val())
+                            for (i = 0; i < data.objects.length; i++) {
+                                $("#table-body").append(`
+
+                                <tr class="table-row">
+                                    <td >
+                                        <p>${data.objects[i].type}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].name}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].address}</p>
+                                    </td>
+                                    <td>
+                                        <p>${data.objects[i].phone_number}</p>
+                                    </td>
+                                </tr>
+                                `)
+                            }
+                        },
+                        error: (error) => {
+                            alert(error);
+                        }
+                    });
+                }
+
+            });
+        });
+        {% comment %} $(document).ready(function(){
+             alert(1);
+             $('#choosing_cluster').change(function (){
+                     alert($('#choosing_cluster').index);
+                     $.ajax({
+                         url: {% url "select_cluster" %},
+                         type: 'GET',
+                         data: {"id_cluster": $("#choosing_cluster").index},
+                         success: (data) => {
+
+                             $("#table-id").after(`
+
+                         <tr class="table-row">
+                             <td >
+                                 <p>${data.object.type}</p>
+                             </td>
+                             <td>
+                                 <p>${data.name}</p>
+                             </td>
+                             <td>
+                                 <p>${data.address}</p>
+                             </td>
+                             <td>
+                                 <p>${data.phone_number}</p>
+                             </td>
+                         </tr>
+                             `)
+                         },
+                         error: (error) => {
+                             console.log(error);
+                         }
+                     })
+             });
+
+         });{% endcomment %}
+
+
+    </script>
+    {#    Добавить какой то текст   #}
+
+{% endblock %}
+{% block javascript %}
+
+
+{% endblock %}

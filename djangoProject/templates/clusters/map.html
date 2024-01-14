@@ -1,0 +1,43 @@
+{% extends "main.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+    <link href="{% static "css/clusters/cluster.css" %}" type="text/css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+    <div class="block-btn">
+        <select class="form-select" aria-label="Default select example" id="choosing_cluster">
+            <option value="0" selected>Выберите кластер</option>
+            {% for i in clusters %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+            {#            <option value="1">One</option>#}
+            {#            <option value="2">Two</option>#}
+            {#            <option value="3">Three</option>#}
+        </select>
+        <button class="btn" id="increased">Отобразить выбросы</button>
+        <div>
+            <label class="label-cluster">Выбранный кластер: </label>
+            <label class="label-cluster" id="in_cluster"></label>
+        </div>
+    </div>
+
+    <div class="block-data">
+        
+    </div>
+
+    <script>
+
+
+
+    </script>
+    {#    Добавить какой то текст   #}
+
+{% endblock %}
+{% block javascript %}
+
+
+{% endblock %}
