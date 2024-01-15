@@ -28,7 +28,7 @@
             <a class="nav-link" href="{% url "main" %}">Исследования</a>
         </li>
         <li>
-            <a class="nav-link" href="">Карта</a>
+            <a class="nav-link" href="{% url "map" %}">Карта</a>
         </li>
         <li>
             <a class="nav-link" href="">О нас</a>
@@ -44,7 +44,7 @@
             <div class="btn"><a class="nav-link" href="{% url "login" %}">Войти</a></div>
         {% endif %}
     {% endblock %}
-    <div class="block-flash" style="display: flex;
+    <div class="block-flash" id="flash1" style="display: flex;
                 flex-direction: column;
                 position: fixed;
                 right: 0;
@@ -70,8 +70,7 @@
 </main>
 </body>
 <script>
-
-    var close = document.getElementsByClassName("flash");
+    
     setTimeout(function () {
         var close1 = document.getElementsByClassName("flash");
 
@@ -80,6 +79,8 @@
 
         }
     }, 5000);
+    var close = document.getElementsByClassName("flash");
+    
     for (var i = 0; i < close.length; i++) {
 
         close[i].onclick = function () {

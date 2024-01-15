@@ -66,8 +66,11 @@ def profile(request):
             if user.check_password(old_password):
                 if new_password != "":
                     user.set_password(new_password)
+                else:
+                    messages.info(request, "Новый пароль не может быть пустым!")
             else:
                 messages.info(request, "Старый пароль не совпадает!")
+
 
         if email != "":
             user.email = email

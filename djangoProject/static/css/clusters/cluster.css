@@ -72,11 +72,50 @@ thead{
     border-radius:15px;
     border-color: rgba(211, 211, 211, 0.51);
     border-style: solid ;
+    margin: auto;
 }
 
-
+.table-row > td > p{
+    margin: 15px;
+    text-wrap: normal;
+}
+td{
+    width: 25%;
+}
 .label-cluster{
     color: white;
     font-size: 25px;
     margin: auto;
+}
+.hidden{
+    display: none;
+}
+#save_name {
+    background-color: #049b9b;
+    color: white;
+    display: initial;
+
+    margin: auto 2vw auto 2vw;
+    transition: background-color 400ms, color 400ms;
+}
+
+#save_name:hover {
+    background-color: #05d0d0;
+    color: #000000;
+}
+
+#btn_name_save{
+    font-size: 18px;
+    margin-left: 0;
+    margin-right: 0;
+}
+#name_cluster{
+    border-radius: 5px;
+    border-width: 0;
+    margin-left: 5px;
+}
+
+.block_updateName{
+    display: flex;
+    flex-direction: row;
 }

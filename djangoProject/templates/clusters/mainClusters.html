@@ -13,12 +13,9 @@
     <div class="block-btn">
         <select class="form-select" aria-label="Default select example" id="choosing_cluster">
             <option value="0" selected>Выберите кластер</option>
-            {% for i in clusters %}
-                <option value="{{ i }}">{{ i }}</option>
+            {% for key, value in clusters.items %}
+                <option value="{{ key }}">{{ value }}</option>
             {% endfor %}
-            {#            <option value="1">One</option>#}
-            {#            <option value="2">Two</option>#}
-            {#            <option value="3">Three</option>#}
         </select>
         <button class="btn" id="increased">Отобразить выбросы</button>
         <div>
@@ -29,12 +26,13 @@
 
     <div class="block-data">
         <table class="table-data">
-            <thead>
+            <thead id="tHead" class="hidden">
             <tr>
                 <th class="table-head">Тип объекта</th>
                 <th class="table-head">Наименование</th>
                 <th class="table-head">Адрес</th>
                 <th class="table-head">Контактные данные</th>
+                <th class="table-head hidden" id="increased-head">Имя выброса</th>
             </tr>
             </thead>
 
@@ -43,17 +41,31 @@
         </table>
 
     </div>
+    {% if user.is_authenticated %}
+        <div class="hidden" id="btn_name_save1">
+            <div style="display: flex; flex-direction: row;">
 
+                <label for="name_cluster" class="label-cluster" id="btn_name_save">Изменить название кластера </label><input
+                        type="text" id="name_cluster" name="name_cluster">
+                <button class="btn" id="save_name">Сохранить</button>
+
+            </div>
+        </div>
+    {% endif %}
     <script>
         $(document).ready(function () {
             $('#increased').click(function () {
+                $("#choosing_cluster").val(-1);
                 $("#table-body").empty();
-
+                $("#btn_name_save").text("Изменить название выброса () ")
                 $.ajax({
                     url: 'select_cluster',
                     type: 'GET',
                     data: {"id_cluster": -1},
                     success: (data) => {
+                        $("#tHead").removeClass("hidden");
+                        $("#btn_name_save1").removeClass("hidden");
+                        $("#increased-head").removeClass("hidden");
                         $("#in_cluster").empty().append("выбросы");
                         for (i = 0; i < data.objects.length; i++) {
                             $("#table-body").append(`
@@ -70,8 +82,19 @@
                                     <td>
                                         <p>${data.objects[i].phone_number}</p>
                                     </td>
+                                    <td>
+                                        <p>${data.objects[i].id}</p>
+                                    </td>
                                 </tr>
                                 `)
+                        }
+                        var rows = document.getElementsByClassName("table-row");
+                        for (var i = 0; i < rows.length; i++){
+                            rows[i].onclick =function (){
+                                {#$("#btn_name_save").#}
+                                $("#btn_name_save").text(`Изменить название выброса (${this.childNodes[9].innerText}) `)
+                                $("#btn_name_save").data("id_increased", this.childNodes[9].innerText);
+                            };
                         }
                     },
                     error: (error) => {
@@ -79,21 +102,26 @@
                     }
                 });
             });
+
             $('#choosing_cluster').change(function () {
                 $("#table-body").empty();
-                $("#in_cluster").empty()
+                $("#in_cluster").empty();
+                $("#btn_name_save").text("Изменить название кластера ")
                 if ($('#choosing_cluster').val() !== "0") {
+                    $("#tHead").removeClass("hidden");
+                    $("#increased-head").addClass("hidden");
+                    $("#btn_name_save1").removeClass("hidden");
                     $.ajax({
                         url: 'select_cluster',
                         type: 'GET',
                         data: {"id_cluster": $("#choosing_cluster").val()},
                         success: (data) => {
-                            $("#in_cluster").append($("#choosing_cluster").val())
+
+                            $("#in_cluster").append($("#choosing_cluster option:selected").text())
                             for (i = 0; i < data.objects.length; i++) {
                                 $("#table-body").append(`
-
                                 <tr class="table-row">
-                                    <td >
+                                    <td>
                                         <p>${data.objects[i].type}</p>
                                     </td>
                                     <td>
@@ -105,6 +133,7 @@
                                     <td>
                                         <p>${data.objects[i].phone_number}</p>
                                     </td>
+
                                 </tr>
                                 `)
                             }
@@ -113,45 +142,90 @@
                             alert(error);
                         }
                     });
+                } else {
+                    $("#tHead").addClass("hidden");
+                    $("#btn_name_save1").addClass("hidden");
+                    $("#increased-head").addClass("hidden");
                 }
 
+
             });
+
+            function createMessage(text) {
+                $("#flash1").append(
+                    `
+                        <div class="flash">
+                            <span class="closebtn">&times;</span>
+                            ${text}
+                        </div>
+                        `
+                );
+                var close = document.getElementsByClassName("flash");
+
+                for (var i = 0; i < close.length; i++) {
+
+                    close[i].onclick = function () {
+                        this.style.display = "none"
+
+                    }
+                }
+                setTimeout(function () {
+                        var close1 = document.getElementsByClassName("flash");
+
+                        for (var i = 0; i < close1.length; i++) {
+                            close1[i].style.display = "none"
+
+                        }
+                    }
+                , 5000);
+
+            }
+
+            $('#save_name').click(function () {
+                if ($("#btn_name_save").data("id_increased") === undefined)
+                    $.ajax({
+                        url: 'update_name_cluster',
+                        type: 'GET',
+                        data: {"id_cluster": $("#choosing_cluster").val(), "name": $('#name_cluster').val()},
+                        success: (data) => {
+                            createMessage("Наименование класстера сохранено");
+                            if ($('#choosing_cluster').val() != null) {
+                                $('#choosing_cluster option:selected').text($('#name_cluster').val());
+                            }
+                            $('#name_cluster').val("");
+    
+                        },
+                        error: (error) => {
+                            alert(error);
+                        }
+                    });
+                else {
+                    
+                    var id_increased = $("#btn_name_save").data("id_increased")
+                    $.ajax({
+                        url: 'update_name_increased',
+                        type: 'GET',
+                        data: {
+                            "id_increased": id_increased,
+                            "name": $('#name_cluster').val()
+                        },
+                        success: (data) => {
+                            createMessage(`Наименование выброса (${$("#btn_name_save").data("id_increased")}) сохранено`);
+                            if ($('#choosing_cluster').val() != null) {
+                                $('#choosing_cluster option:selected').text($('#name_cluster').val());
+                            }
+                            $('#name_cluster').val("");
+
+                        },
+                        error: (error) => {
+                            alert(error);
+                        }
+                    });
+                }
+            
+            });
+
         });
-        {% comment %} $(document).ready(function(){
-             alert(1);
-             $('#choosing_cluster').change(function (){
-                     alert($('#choosing_cluster').index);
-                     $.ajax({
-                         url: {% url "select_cluster" %},
-                         type: 'GET',
-                         data: {"id_cluster": $("#choosing_cluster").index},
-                         success: (data) => {
-
-                             $("#table-id").after(`
-
-                         <tr class="table-row">
-                             <td >
-                                 <p>${data.object.type}</p>
-                             </td>
-                             <td>
-                                 <p>${data.name}</p>
-                             </td>
-                             <td>
-                                 <p>${data.address}</p>
-                             </td>
-                             <td>
-                                 <p>${data.phone_number}</p>
-                             </td>
-                         </tr>
-                             `)
-                         },
-                         error: (error) => {
-                             console.log(error);
-                         }
-                     })
-             });
-
-         });{% endcomment %}
 
 
     </script>

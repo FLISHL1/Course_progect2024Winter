@@ -1,3 +1,3 @@
 from .Food import Food
-from .school import School
+from .School import School
 from .Polyclinic import Polyclinic

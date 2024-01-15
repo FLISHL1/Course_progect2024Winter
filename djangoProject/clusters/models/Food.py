@@ -12,6 +12,7 @@ class Food(models.Model):
     latitude = models.DecimalField(max_digits=19, decimal_places=17)
     is_net_object = models.BooleanField()
     phone_number = models.CharField(max_length=30, null=True, default=None)
+    address = models.TextField(null=True)
 
     @staticmethod
     def update_food():
@@ -22,7 +23,6 @@ class Food(models.Model):
             'https://apidata.mos.ru/v1/datasets/1903/count?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260').text)
         foods = []
         for i in range(0, count_response, 1000):
-            print(i)
             response = requests.get(
                 f'https://apidata.mos.ru/v1/datasets/1903/features?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260&$skip={i}')
             response = response.json()
@@ -41,6 +41,6 @@ class Food(models.Model):
                     longitude=float(coordinates[0]),
                     latitude=float(coordinates[1]))
         food.phone_number = attribute['PublicPhone'][0]["PublicPhone"] if len(attribute['PublicPhone']) > 0 else None
-
+        food.address = attribute["Address"]
         return food
 

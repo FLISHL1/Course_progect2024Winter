@@ -4,19 +4,19 @@
 
 {% block head %}
     <link href="{% static "css/clusters/cluster.css" %}" type="text/css" rel="stylesheet">
-
+    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+    <script src="{% static "js/map.js" %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="block-btn">
         <select class="form-select" aria-label="Default select example" id="choosing_cluster">
+
             <option value="0" selected>Выберите кластер</option>
             {% for i in clusters %}
                 <option value="{{ i }}">{{ i }}</option>
             {% endfor %}
-            {#            <option value="1">One</option>#}
-            {#            <option value="2">Two</option>#}
-            {#            <option value="3">Three</option>#}
+
         </select>
         <button class="btn" id="increased">Отобразить выбросы</button>
         <div>
@@ -25,12 +25,15 @@
         </div>
     </div>
 
-    <div class="block-data">
-        
+    <div class="block-data" id="map">
     </div>
 
     <script>
-
+        const map = new mapgl.Map('map', {
+            key: '1a6a4fb2-04da-4688-bd87-2989b85ee9eb',
+            center: [37.588144, 55.733842],
+            zoom: 10,
+        });
 
 
     </script>

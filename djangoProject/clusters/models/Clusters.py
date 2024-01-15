@@ -1,12 +1,10 @@
-from django.db import models
+from django.contrib.auth.models import User
 
-import requests
 from django.db import models
 from django.db import connection
-from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import DjangoJobStore
 
-from clusters.models import Food, Polyclinic
+import clusters.models.Clusters as clusters
+from clusters.models import Food, Polyclinic, Cluster_archive, Cluster_name
 
 
 class ClustersBundels(models.Model):
@@ -17,37 +15,73 @@ class ClustersBundels(models.Model):
     cluster = models.IntegerField(blank=True, null=True)
 
     @staticmethod
-    def get_all_cluster():
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT DISTINCT cluster FROM clusters_bundels ORDER BY cluster")
-            results = cursor.fetchall()
-            cursor.close()
-        return [result[0] for result in results if result[0] is not None]
+    def get_all_cluster(user: User = None):
+        # with connection.cursor() as cursor:
+        #     cursor.execute("SELECT DISTINCT cluster FROM clusters_bundels ORDER BY cluster")
+        #     results = cursor.fetchall()
+        #     cursor.close()
+        results = clusters.ClustersBundels.objects.values("cluster").order_by("cluster").distinct()
+
+        if user is not None:
+            clusters_name = {}
+            for cluster in Cluster_name.Name.objects.filter(id_user=user).distinct():
+                clusters_name[cluster.cluster] = cluster.name
+
+        result = {}
+        for cluster in results:
+            if cluster["cluster"] is None: continue
+
+            if user is not None and cluster["cluster"] in list(clusters_name.keys()):
+                result[cluster["cluster"]] = clusters_name[cluster["cluster"]]
+            else:
+                result[cluster["cluster"]] = cluster["cluster"]
+        return result
+
     @staticmethod
-    def get_selection(cluster_id: int, count:int = 10):
+    def get_selection(cluster_id: int, count: int = 10):
         list = []
+        objects = ClustersBundels.objects.filter(cluster=cluster_id).order_by("?")[:count].all()
         if str(cluster_id) == "-1":
             cluster_id = None
-        for i in ClustersBundels.objects.filter(cluster=cluster_id).order_by("?")[:count].all():
+            objects = ClustersBundels.objects.filter(cluster=cluster_id).order_by("?").all()
+        for i in objects:
             match (str(i.type)):
                 case "F":
                     food = Food.objects.get(id=i.id)
                     list.append({
                         'type': food.type.capitalize(),
                         'name': food.name.capitalize(),
-                        'address': "",
-                        'phone_number': ("+7" + food.phone_number.capitalize()) if food.phone_number.capitalize() != "Нет телефона" else food.phone_number.capitalize()
+                        'address': food.address,
+                        'phone_number': (
+                                "+7" + food.phone_number.capitalize()) if food.phone_number.capitalize() != "Нет телефона" else food.phone_number.capitalize(),
+                        "id": f"F-{food.id}"
                     })
                 case "P":
                     polyclinic = Polyclinic.objects.get(id=i.id)
                     list.append({
                         'type': polyclinic.type.capitalize(),
                         'name': polyclinic.name.capitalize(),
-                        'address': "",
-                        'phone_number': ("+7 " + polyclinic.phone_number) if polyclinic.phone_number is not None else "Нет номера телефона"
+                        'address': polyclinic.address,
+                        'phone_number': (
+                                "+7 " + polyclinic.phone_number) if polyclinic.phone_number is not None else "Нет номера телефона",
+                        "id": f"P-{polyclinic.id}"
                     })
 
         return list
+
+    @staticmethod
+    def update_items():
+
+        ClustersBundels.objects.all().delete()
+
+        Food.update_food()
+        Polyclinic.update_polyclinic()
+
+        with connection.cursor() as cursor:
+            cursor.execute("CALL update_bundle();")
+            cursor.execute("CALL runDBScanTest(0.029, 4);")
+            cursor.close()
+        print("Update successful")
 
     class Meta:
         managed = False

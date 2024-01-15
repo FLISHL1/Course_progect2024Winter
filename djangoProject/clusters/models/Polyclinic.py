@@ -13,13 +13,14 @@ class Polyclinic(models.Model):
     longitude = models.DecimalField(max_digits=19, decimal_places=17)
     latitude = models.DecimalField(max_digits=19, decimal_places=17)
     phone_number = models.CharField(max_length=25, null=True)
+    address = models.TextField(null=True)
     URL_DATASET = ['https://apidata.mos.ru/v1/datasets/505/features?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260',
                    'https://apidata.mos.ru/v1/datasets/506/features?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260',
                    'https://apidata.mos.ru/v1/datasets/503/features?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260',
                    'https://apidata.mos.ru/v1/datasets/502/features?api_key=edeed7c9-a0b7-4bab-b12b-75fff06ca260']
+
     @staticmethod
     def update_polyclinic():
-
         Polyclinic.objects.all().delete()
         with connection.cursor() as cursor:
             cursor.execute("ALTER TABLE clusters_polyclinic AUTO_INCREMENT = 1;")
@@ -33,6 +34,7 @@ class Polyclinic(models.Model):
     def create_polyclinic(feature):
         coordinates = feature['geometry']['coordinates'][0]
         attribute = feature['properties']['attributes']
+
         polyclinic = Polyclinic(
             name=attribute['ShortName'],
             type=attribute['Category'],
@@ -42,7 +44,8 @@ class Polyclinic(models.Model):
             is_ambulance=False if attribute['AmbulanceStation'] == "нет" else True,
             longitude=float(coordinates[0]),
             latitude=float(coordinates[1]))
+
         polyclinic.phone_number = attribute['PublicPhone'][0]["PublicPhone"] if len(
             attribute['PublicPhone']) > 0 else None
-
+        polyclinic.address = attribute["ObjectAddress"][0]["Address"] if len(attribute["ObjectAddress"]) > 0 else None
         return polyclinic
