@@ -4,7 +4,7 @@ from django.db import models
 from django.db import connection
 
 import clusters.models.Clusters as clusters
-from clusters.models import Food, Polyclinic, Cluster_archive, Cluster_name
+from clusters.models import Food, Polyclinic, Cluster_archive, Cluster_name, Cluster_name_increased
 
 
 class ClustersBundels(models.Model):
@@ -38,13 +38,23 @@ class ClustersBundels(models.Model):
         return result
 
     @staticmethod
-    def get_selection(cluster_id: int, count: int = 10):
+    def get_selection(cluster_id: int, count: int = 10,
+                      user: User = None):
         list = []
         objects = ClustersBundels.objects.filter(cluster=cluster_id).order_by("?")[:count].all()
         if str(cluster_id) == "-1":
             cluster_id = None
             objects = ClustersBundels.objects.filter(cluster=cluster_id).order_by("?").all()
         for i in objects:
+            if cluster_id is None:
+                object = Cluster_name_increased.NameIncreased.objects.filter(type=i.type, id_increased=i.id, id_user=user).all()
+                if len(object) > 0:
+                    object = object[0].name
+                else:
+                    object= None
+            else:
+                object = None
+
             match (str(i.type)):
                 case "F":
                     food = Food.objects.get(id=i.id)
@@ -54,7 +64,8 @@ class ClustersBundels(models.Model):
                         'address': food.address,
                         'phone_number': (
                                 "+7" + food.phone_number.capitalize()) if food.phone_number.capitalize() != "Нет телефона" else food.phone_number.capitalize(),
-                        "id": f"F-{food.id}"
+                        "id": f"F-{food.id}",
+                        'id_name': object
                     })
                 case "P":
                     polyclinic = Polyclinic.objects.get(id=i.id)
@@ -64,7 +75,8 @@ class ClustersBundels(models.Model):
                         'address': polyclinic.address,
                         'phone_number': (
                                 "+7 " + polyclinic.phone_number) if polyclinic.phone_number is not None else "Нет номера телефона",
-                        "id": f"P-{polyclinic.id}"
+                        "id": f"P-{polyclinic.id}",
+                        "id_name": object
                     })
 
         return list

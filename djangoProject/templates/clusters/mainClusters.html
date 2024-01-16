@@ -68,8 +68,13 @@
                         $("#increased-head").removeClass("hidden");
                         $("#in_cluster").empty().append("выбросы");
                         for (i = 0; i < data.objects.length; i++) {
-                            $("#table-body").append(`
-                                <tr class="table-row">
+                            if (data.objects[i].id_name !== null){
+                                var id = data.objects[i].id_name;
+                            }else {
+                                var id = data.objects[i].id;
+                            }
+                            var row = $(`
+                                <tr class="table-row" data-id='${data.objects[i].id}'>
                                     <td >
                                         <p>${data.objects[i].type}</p>
                                     </td>
@@ -83,18 +88,20 @@
                                         <p>${data.objects[i].phone_number}</p>
                                     </td>
                                     <td>
-                                        <p>${data.objects[i].id}</p>
+                                        <p>${id}</p>
                                     </td>
                                 </tr>
-                                `)
+                                `);
+                            $("#table-body").append(row)
                         }
                         var rows = document.getElementsByClassName("table-row");
                         for (var i = 0; i < rows.length; i++){
-                            rows[i].onclick =function (){
+                            rows[i].addEventListener('click', function (){
                                 {#$("#btn_name_save").#}
                                 $("#btn_name_save").text(`Изменить название выброса (${this.childNodes[9].innerText}) `)
-                                $("#btn_name_save").data("id_increased", this.childNodes[9].innerText);
-                            };
+                                
+                                $("#btn_name_save").data("id_increased", this.dataset.id);
+                            });
                         }
                     },
                     error: (error) => {
