@@ -9,4 +9,5 @@ urlpatterns = [
     path('update_name_cluster', views.update_name_cluster, name='update_name_cluster'),
     path('update_name_increased', views.update_name_increased, name='update_name_increased'),
     path('map', views.map, name='map'),
+    path('all_points', views.get_all_points, name='all_points'),
 ]
