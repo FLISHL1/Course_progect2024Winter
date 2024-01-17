@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
+from sklearn.metrics import silhouette_score
 
 from clusters.models import Food, Polyclinic, Clusters, Cluster_name, Cluster_name_increased
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -9,8 +10,8 @@ from django_apscheduler.jobstores import DjangoJobStore
 
 @login_required
 def update(request):
-    test()
     return HttpResponse("Okl")
+
 
 
 def test():
@@ -34,15 +35,15 @@ scheduler.start()
 def selected_cluster(request):
     if request.method == "GET":
         id_cluster = request.GET["id_cluster"]
-        objects = Clusters.ClustersBundels.get_selection(id_cluster, 10, request.user)
-        print(objects)
+        count = int(request.GET["count"])
+        objects = Clusters.ClustersBundels.get_selection(id_cluster, count, request.user)
         return JsonResponse({"objects": objects})
     else:
         return HttpResponseBadRequest('Invalid request')
 
 
 def map(request):
-    return render(request, 'clusters/map.html')
+    return render(request, 'clusters/map.html', {"clusters": Clusters.ClustersBundels.get_all_cluster(request.user)})
 
 @login_required
 def update_name_cluster(request):
@@ -73,3 +74,8 @@ def update_name_increased(request):
         return JsonResponse(data={"name": name}, status=200)
     else:
         pass
+
+
+def get_all_points(request):
+    objects = Clusters.ClustersBundels.get_all_points(request.GET["id_cluster"])
+    return JsonResponse(objects, safe=False)
