@@ -39,6 +39,7 @@ def signup_views(request):
             user.first_name = first_name
             user.last_name = last_name
             user.save()
+            messages.info(request, f"Регистрация прошла успешно")
             return HttpResponseRedirect("login")
 
     else:
@@ -80,6 +81,7 @@ def profile(request):
         user.last_name = last_name
 
         user.save()
+        login(request, user)
 
     return render(request, 'account/profile.html')
 
