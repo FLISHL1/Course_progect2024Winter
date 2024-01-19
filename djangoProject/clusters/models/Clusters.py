@@ -4,7 +4,7 @@ from django.db import models
 from django.db import connection
 
 import clusters.models.Clusters as clusters
-from clusters.models import Food, Polyclinic, Cluster_archive, Cluster_name, Cluster_name_increased
+from clusters.models import Food, Polyclinic, Cluster_name, Cluster_name_increased
 
 
 class ClustersBundels(models.Model):
@@ -107,7 +107,6 @@ class ClustersBundels(models.Model):
                 'id_name': object
             })
         return list
-
     @staticmethod
     def update_items():
         ClustersBundels.objects.all().delete()

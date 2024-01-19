@@ -14,15 +14,19 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <link href="{% static "css/header.css" %}" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="64x64" href="{% static "img/LogoSite.png" %}">
     {% block head %}
         <link href="{% static "css/style.css" %}" type="text/css" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
 <header>
-    <a class="icon_header" href="{% url "mainPage" %}">
+    <a style="display: flex; flex-direction: row" class="icon_header" href="{% url "mainPage" %}">
         <img src="{% static "img/Icon_Header.svg" %}">
+
     </a>
+    <img height="60px" style="margin: auto 1px" src="{% static "img/Quantum.png" %}">
+
     <ul class="nav">
         <li>
             <a class="nav-link" href="{% url "main" %}">Исследования</a>
@@ -30,15 +34,15 @@
         <li>
             <a class="nav-link" href="{% url "map" %}">Карта</a>
         </li>
-        <li>
+        {% comment %}        <li>
             <a class="nav-link" href="">О нас</a>
-        </li>
+        </li>{% endcomment %}
     </ul>
     {% block account_action %}
         {% if user.is_authenticated %}
 
-            <div class="btn"><label class="username">{{ user.username }}</label><a class="nav-link"
-                                                                                   href="{% url "profile" %}">Профиль</a>
+            <div class="btn"><a class="nav-link"
+                                href="{% url "profile" %}">{{ user.username }} Профиль</a>
             </div>
         {% else %}
             <div class="btn"><a class="nav-link" href="{% url "login" %}">Войти</a></div>
@@ -63,14 +67,63 @@
 <main>
     {% block content %}
         <div class="mainPage">
-            <img src="{% static "img/logo.png" %}" class="logoImage">
-            <img src="{% static "img/Quantum.png" %}" class="logoText">
+            <div class="logo-block">
+                <img src="{% static "img/logo.png" %}" class="logoImage">
+                <div class="description">
+                    <h1>Добро пожаловать на Quantum!</h1>
+                    <br>
+                    <p>
+                        Ваш проводник в мир городской инфраструктуры Москвы!
+                        Наш сайт
+                        основан на передовых технологиях и алгоритмах, предназначенных для анализа и визуализации
+                        данных.
+                        <b>Quantum</b>
+                        создан с целью предоставить вам уникальный инструмент для глубокого понимания городской среды
+                        через
+                        призму
+                        современных технологий и анализа данных.
+                    </p>
+                </div>
+            </div>
+            <div class="logo-block" id="block2">
+                <div class="description" id="text-list">
+                    <h1>Для чего нужен Quantum:</h1>
+                    <br>
+                    <p class="description-list">
+                    <h3>Анализ Инфраструктуры</h3> Quantum позволяет вам изучить инфраструктуру Москвы на более
+                    глубоком
+                    уровне. Алгоритм DBSCAN выделяет кластеры и выбросы, что помогает выделить особенности различных
+                    районов города.<br>
+
+                    <h3>Оптимизация Планирования</h3> Используйте результаты анализа для оптимизации планирования
+                    городских
+                    проектов. Понимайте, какие объекты сосредоточены в определенных областях, и принимайте
+                    информированные решения.<br>
+
+                    <h3>Интерактивная Визуализация</h3> Quantum предоставляет вам возможность взаимодействовать с
+                    данными
+                    через интерактивные карты и таблицы, что делает процесс исследования более увлекательным и
+                    доступным.<br>
+                    </p>
+                </div>
+                <img src="{% static "img/Quantum.png" %}" class="logoText">
+            </div>
         </div>
+
     {% endblock %}
 </main>
+<footer>
+    <div class="contact">
+        <p><b>Email:</b> test_@gmail.com</p>
+        <p><b>Номер телефона:</b> +7 (960) 471 78-10</p>
+        <p><b>Ссылка на источник открытых данных:</b> data.mos.ru</p>
+    </div>
+
+
+</footer>
 </body>
 <script>
-    
+
     setTimeout(function () {
         var close1 = document.getElementsByClassName("flash");
 
@@ -80,7 +133,7 @@
         }
     }, 5000);
     var close = document.getElementsByClassName("flash");
-    
+
     for (var i = 0; i < close.length; i++) {
 
         close[i].onclick = function () {
@@ -89,8 +142,8 @@
         }
     }
 </script>
-    
-    {% block javascript %}
-        
-    {% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
 </html>

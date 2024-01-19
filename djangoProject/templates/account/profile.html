@@ -11,6 +11,9 @@
 {% block content %}
     <form method="POST">
         {% csrf_token %}
+        
+        <div class="name-page">Мой профиль</div>
+        <div style="display: flex; flex-direction: row">
         <div class="block_left">
             <label for="login">
                 Логин<br>
@@ -35,9 +38,7 @@
         <div class="block_left">
             <div class="block_img">
                 <img src="{% static "img/logo.png" %}" class="logo">
-                <h1 class="username">{{ user.username }},<br>{{ user.last_name }} {{ user.first_name }}</h1>
-            </div>
-            <div>
+<div>
                 <label for="old_password">
                     Старый пароль<br>
                     <input type="password" class="form_field" name="old_password">
@@ -47,6 +48,9 @@
                     <input type="text" class="form_field" name="new_password">
                 </label>
             </div>
+            </div>
+            
+        </div>
         </div>
         
     </form>

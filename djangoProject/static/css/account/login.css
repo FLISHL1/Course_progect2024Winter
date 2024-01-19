@@ -5,6 +5,7 @@
     width: 386px;
     height: 47px;
     font-size: 25px;
+    padding-left: 7px;
 }
 
 form {
@@ -17,7 +18,6 @@ form {
     color: #FFF;
     text-shadow: 0px 0px 7px #FFF;
     text-align: center;
-    font-family: 'Michroma', sans-serif;
 }
 
 label {
@@ -32,15 +32,17 @@ h1 {
 
 main {
     display: flex;
+    height: 90vh;
+
 }
 
 .btn_submit {
     background-color: white;
-    border-radius: 30px;
+    border-radius: 23px;
     font-size: 30px;
     width: fit-content;
-    padding: 4px;
-    margin: 25px auto ;
+    padding: 10px;
+    margin: 25px auto;
     border: none;
     transition: color 200ms, background-color 200ms;
 }
@@ -50,22 +52,80 @@ main {
     color: white;
 }
 
-.register{
+.register {
     font-size: 20px;
     margin: auto auto 21px auto;
 }
-.register_link
-{
+
+.register_link {
     text-decoration: none;
-    color:white;
+    color: white;
     transition: color 200ms;
 }
 
-.register_link:hover
-{
-    color:#049b9b;
+.register_link:hover {
+    color: #049b9b;
 
 }
-main{
-    height: 90vh;
+
+@media (device-width <= 1440px) {
+    .register {
+    font-size: 23px;
+}
+    h1 {
+
+        font-size: 56px;
+    }
+
+    .form_field {
+        width: 37vw;
+        height: 6vh;
+        font-size: 28px;
+
+    }
+
+    label {
+        font-size: 40px;
+    }
+
+    form {
+
+        margin: auto auto;
+    }
+}
+
+@media (device-width <= 425px) {
+        h1 {
+
+        font-size: 90px;
+    }
+        .register {
+    font-size: 43px;
+}
+    form {
+
+        flex-direction: column;
+        margin: auto auto;
+        padding: 64px;
+    }
+
+    .block_img {
+        display: none;
+    }
+
+    .form_field {
+        width: 76vw;
+        height: 5vh;
+        font-size: 55px;
+    }
+
+    label {
+        font-size: 70px;
+    }
+
+    .btn_submit {
+
+        font-size: 70px;
+
+    }
 }

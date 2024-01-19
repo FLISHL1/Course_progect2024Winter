@@ -1,39 +1,80 @@
 {% extends "main.html" %}
 {% load static %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Карта{% endblock %}
 
 {% block head %}
     <link href="{% static "css/clusters/cluster.css" %}" type="text/css" rel="stylesheet">
-    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+    {#    <script src="https://mapgl.2gis.com/api/js/v1"></script>#}
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=66fb29de-6a6b-4275-9aba-3ad33178679e&lang=ru_RU"
+            type="application/javascript"></script>
     <script src="{% static "js/map.js" %}"></script>
 {% endblock %}
 
 {% block content %}
+    <div class='text-block' id="top">
+
+        <div class='text'>
+            <p class="p-text">
+                На этой странице вы сможете изучить выбранный кластер или выброс на карте Москвы.
+            </p>
+        </div>
+    </div>
+
     <div class="block-btn">
         <select class="form-select" aria-label="Default select example" id="choosing_cluster">
 
             <option value="0" selected>Выберите кластер</option>
-            {% for i in clusters %}
-                <option value="{{ i }}">{{ i }}</option>
+            {% for key, value in clusters.items %}
+                <option value="{{ key }}">{{ value }}</option>
             {% endfor %}
 
         </select>
         <button class="btn" id="increased">Отобразить выбросы</button>
         <div>
-            <label class="label-cluster">Выбранный кластер: </label>
+            <label class="label-cluster hidden" id="label_cluster">Выбранный кластер: </label>
             <label class="label-cluster" id="in_cluster"></label>
         </div>
     </div>
 
-    <div class="block-data" id="map">
+    <div class="block-data" style="overflow: hidden" id="map">
     </div>
+    {% if user.is_authenticated %}
+        <div class="hidden" id="btn_name_save1">
+            <div style="display: flex; flex-direction: row;">
 
+                <label for="name_cluster" class="label-cluster" id="btn_name_save">Изменить название
+                    кластера </label><input
+                    type="text" id="name_cluster" name="name_cluster">
+                <button class="btn" id="save_name">Сохранить</button>
+
+            </div>
+        </div>
+    {% else %}
+        <div style="display: flex; flex-direction: row;">
+
+            <label for="name_cluster" class="label-cluster" id="btn_name_save2">После авторизации вам будет доступно
+                переимнование кластеров</label>
+
+
+        </div>
+    {% endif %}
+    <div class='text-block' id="bottom">
+
+        
+        <div class='text' id="table-desctiption" style="margin-top: 5vh;">
+            <p class="p-text">
+                Исследуйте карту, углубляйтесь в детали, где каждая точка представляет собой объект городской инфраструктуры, а их группировка на карте помогает
+                выделить особенности данного региона, исследуйте пространственную организацию объектов – это ваша
+                уникальная возможность понять городскую среду через призму данных и современных технологий.
+            </p>
+        </div>
+    </div>
     <script>
-        const map = new mapgl.Map('map', {
-            key: '1a6a4fb2-04da-4688-bd87-2989b85ee9eb',
-            center: [37.588144, 55.733842],
-            zoom: 10,
-        });
+        {% comment %}        const map = new mapgl.Map('map', {
+                    key: '1a6a4fb2-04da-4688-bd87-2989b85ee9eb',
+                    center: [37.588144, 55.733842],
+                    zoom: 10,
+                });{% endcomment %}
 
 
     </script>

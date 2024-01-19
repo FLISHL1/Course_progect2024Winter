@@ -1,3 +1,15 @@
+create definer = user@`%` procedure update_bundle()
+BEGIN
+    INSERT INTO clusters_bundels (type, id, latitude, longitude)
+        SELECT 'F', id, latitude, longitude FROM clusters_food
+            UNION
+        SELECT 'P', id, latitude, longitude FROM clusters_polyclinic;
+end;
+
+
+
+
+
 create definer = user@`%` procedure runDBScanTest(IN eps decimal(8,7), IN minPts int)
 start1:
 BEGIN

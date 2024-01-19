@@ -2,9 +2,11 @@
     margin: 10px;
     border-radius: 5px;
     background: #FFF;
-    width: 386px;
-    height: 47px;
+    width: 20vw;
+    height: 6vh;
     font-size: 25px;
+    border-radius: 16px;
+    padding-left: 15px;
 }
 
 form {
@@ -13,14 +15,15 @@ form {
     box-shadow: 3px -3px 10px 0px rgba(0, 0, 0, 0.29), 14px -11px 18px 0px rgba(0, 0, 0, 0.26), 31px -25px 24px 0px rgba(0, 0, 0, 0.15), 56px -44px 29px 0px rgba(0, 0, 0, 0.04), 87px -69px 31px 0px rgba(0, 0, 0, 0.01);
     margin: auto auto auto auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     color: #FFF;
     text-shadow: 0px 0px 7px #FFF;
     text-align: center;
-    font-family: 'Michroma', sans-serif;
     padding: 10px;
 }
-
+.name-page{
+    font-size: 60px;
+}
 label {
     font-size: 30px;
 }
@@ -40,8 +43,8 @@ main {
     border-radius: 30px;
     font-size: 30px;
     width: fit-content;
-    padding: 4px;
-    margin: 25px auto ;
+    padding: 12px;
+    margin: 25px auto;
     border: none;
     transition: color 200ms, background-color 200ms;
 }
@@ -51,36 +54,78 @@ main {
     color: white;
 }
 
-.register{
+.register {
     font-size: 20px;
     margin: auto auto 21px auto;
 }
-.register_link
-{
+
+.register_link {
     text-decoration: none;
-    color:white;
+    color: white;
     transition: color 200ms;
 }
 
-.register_link:hover
-{
-    color:#049b9b;
+.register_link:hover {
+    color: #049b9b;
 
 }
-main{
+
+main {
     height: 90vh;
 }
 
-.block_left{
+.block_left {
     display: flex;
     flex-direction: column;
 }
-.logo{
-    width: 25%;
 
+.logo {
+    width: 25%;
+    margin: auto;
+    margin-bottom: 46px ;
 }
-.block_img{
+
+.block_img {
     display: flex;
-    flex-direction: row;
-    margin: auto auto auto 25px;
+    flex-direction: column;
+    margin: auto auto auto auto;
+}
+@media (device-width <= 1440px) {
+    .form_field {
+        width: 37vw;
+        height: 6vh;
+        font-size: 28px;
+
+    }
+    form {
+
+        margin: auto 1vw;
+    }
+}
+@media (device-width <= 425px) {
+    form {
+
+        flex-direction: column;
+        margin: auto 2vw;
+    }
+
+    .block_img {
+        display: none;
+    }
+
+    .form_field {
+        width: 76vw;
+        height: 5vh;
+        font-size: 55px;
+    }
+
+    label {
+        font-size: 70px;
+    }
+
+    .btn_submit {
+
+        font-size: 70px;
+
+    }
 }

@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% load static %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Исследования{% endblock %}
 
 {% block head %}
     <link href="{% static "css/clusters/cluster.css" %}" type="text/css" rel="stylesheet">
@@ -10,6 +10,17 @@
             <div class="btn"><a class="nav-link" href="{% url "logout" %}">Выйти</a></div>
 {% endblock %}{% endcomment %}
 {% block content %}
+    <div class='text-block' id="top">
+
+        <div class='text'>
+            <p class="p-text">
+                На этой странице вы сможете ознакомиться с результатами работы алгоритма <b>DBSCAN</b>, который выделяет
+                кластеры и выбросы в датасете городской инфраструктуры.
+            </p>
+        </div>
+    </div>
+
+
     <div class="block-btn">
         <select class="form-select" aria-label="Default select example" id="choosing_cluster">
             <option value="0" selected>Выберите кластер</option>
@@ -19,7 +30,7 @@
         </select>
         <button class="btn" id="increased">Отобразить выбросы</button>
         <div>
-            <label class="label-cluster">Выбранный кластер: </label>
+            <label class="label-cluster hidden" id="label_cluster">Выбранный кластер: </label>
             <label class="label-cluster" id="in_cluster"></label>
         </div>
     </div>
@@ -45,201 +56,57 @@
         <div class="hidden" id="btn_name_save1">
             <div style="display: flex; flex-direction: row;">
 
-                <label for="name_cluster" class="label-cluster" id="btn_name_save">Изменить название кластера </label><input
-                        type="text" id="name_cluster" name="name_cluster">
+                <label for="name_cluster" class="label-cluster" id="btn_name_save">Изменить название
+                    кластера </label><input
+                    type="text" id="name_cluster" name="name_cluster">
                 <button class="btn" id="save_name">Сохранить</button>
 
             </div>
         </div>
+    {% else %}
+        <div style="display: flex; flex-direction: row;">
+            <label for="name_cluster" class="label-cluster" id="btn_name_save2">После авторизации вам будет доступно
+                переимнование кластеров и выбросов</label>
+        </div>
     {% endif %}
-    <script>
-        $(document).ready(function () {
-            $('#increased').click(function () {
-                $("#choosing_cluster").val(-1);
-                $("#table-body").empty();
-                $("#btn_name_save").text("Изменить название выброса () ")
-                $.ajax({
-                    url: 'select_cluster',
-                    type: 'GET',
-                    data: {"id_cluster": -1},
-                    success: (data) => {
-                        $("#tHead").removeClass("hidden");
-                        $("#btn_name_save1").removeClass("hidden");
-                        $("#increased-head").removeClass("hidden");
-                        $("#in_cluster").empty().append("выбросы");
-                        for (i = 0; i < data.objects.length; i++) {
-                            if (data.objects[i].id_name !== null){
-                                var id = data.objects[i].id_name;
-                            }else {
-                                var id = data.objects[i].id;
-                            }
-                            var row = $(`
-                                <tr class="table-row" data-id='${data.objects[i].id}'>
-                                    <td >
-                                        <p>${data.objects[i].type}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].name}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].address}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].phone_number}</p>
-                                    </td>
-                                    <td>
-                                        <p>${id}</p>
-                                    </td>
-                                </tr>
-                                `);
-                            $("#table-body").append(row)
-                        }
-                        var rows = document.getElementsByClassName("table-row");
-                        for (var i = 0; i < rows.length; i++){
-                            rows[i].addEventListener('click', function (){
-                                {#$("#btn_name_save").#}
-                                $("#btn_name_save").text(`Изменить название выброса (${this.childNodes[9].innerText}) `)
-                                
-                                $("#btn_name_save").data("id_increased", this.dataset.id);
-                            });
-                        }
-                    },
-                    error: (error) => {
-                        alert(error);
-                    }
-                });
-            });
+    <div class='text-block' id="bottom">
+<div class='text' id="table-desctiption">
+            <p class="p-text">
+                Таблица на этой странице предоставляет подробную информацию о каждом кластере и выбросе, включая
+                координаты, типы объектов и т.д. Это поможет вам лучше понять структуру городской
+                инфраструктуры и выделить особенности каждого региона.
+            </p>
+        </div>
+        <div class='text' id="block2">
+            <div class="cluster-description">
+                <p class="p-text" представляющих схожие характеристики. Кластеры могут указывать на концентрацию
+                   объектов определенного типа в конкретном районе города.
 
-            $('#choosing_cluster').change(function () {
-                $("#table-body").empty();
-                $("#in_cluster").empty();
-                $("#btn_name_save").text("Изменить название кластера ")
-                if ($('#choosing_cluster').val() !== "0") {
-                    $("#tHead").removeClass("hidden");
-                    $("#increased-head").addClass("hidden");
-                    $("#btn_name_save1").removeClass("hidden");
-                    $.ajax({
-                        url: 'select_cluster',
-                        type: 'GET',
-                        data: {"id_cluster": $("#choosing_cluster").val()},
-                        success: (data) => {
+                   Выбросы
+                >
+                    <b>Кластеры</b><br> Это группы близко расположенных точек, представляющих схожие характеристики.
+                    Кластеры могут
+                    указывать на концентрацию объектов определенного типа в конкретном районе города.
+                    <hr>
+                    Их изучение выявляет уникальные регионы, где объекты схожи по признакам, помогая понять различия
+                    между частями города.
+                </p>
+            </div>
 
-                            $("#in_cluster").append($("#choosing_cluster option:selected").text())
-                            for (i = 0; i < data.objects.length; i++) {
-                                $("#table-body").append(`
-                                <tr class="table-row">
-                                    <td>
-                                        <p>${data.objects[i].type}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].name}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].address}</p>
-                                    </td>
-                                    <td>
-                                        <p>${data.objects[i].phone_number}</p>
-                                    </td>
-
-                                </tr>
-                                `)
-                            }
-                        },
-                        error: (error) => {
-                            alert(error);
-                        }
-                    });
-                } else {
-                    $("#tHead").addClass("hidden");
-                    $("#btn_name_save1").addClass("hidden");
-                    $("#increased-head").addClass("hidden");
-                }
-
-
-            });
-
-            function createMessage(text) {
-                $("#flash1").append(
-                    `
-                        <div class="flash">
-                            <span class="closebtn">&times;</span>
-                            ${text}
-                        </div>
-                        `
-                );
-                var close = document.getElementsByClassName("flash");
-
-                for (var i = 0; i < close.length; i++) {
-
-                    close[i].onclick = function () {
-                        this.style.display = "none"
-
-                    }
-                }
-                setTimeout(function () {
-                        var close1 = document.getElementsByClassName("flash");
-
-                        for (var i = 0; i < close1.length; i++) {
-                            close1[i].style.display = "none"
-
-                        }
-                    }
-                , 5000);
-
-            }
-
-            $('#save_name').click(function () {
-                if ($("#btn_name_save").data("id_increased") === undefined)
-                    $.ajax({
-                        url: 'update_name_cluster',
-                        type: 'GET',
-                        data: {"id_cluster": $("#choosing_cluster").val(), "name": $('#name_cluster').val()},
-                        success: (data) => {
-                            createMessage("Наименование класстера сохранено");
-                            if ($('#choosing_cluster').val() != null) {
-                                $('#choosing_cluster option:selected').text($('#name_cluster').val());
-                            }
-                            $('#name_cluster').val("");
-    
-                        },
-                        error: (error) => {
-                            alert(error);
-                        }
-                    });
-                else {
-                    
-                    var id_increased = $("#btn_name_save").data("id_increased")
-                    $.ajax({
-                        url: 'update_name_increased',
-                        type: 'GET',
-                        data: {
-                            "id_increased": id_increased,
-                            "name": $('#name_cluster').val()
-                        },
-                        success: (data) => {
-                            createMessage(`Наименование выброса (${$("#btn_name_save").data("id_increased")}) сохранено`);
-                            if ($('#choosing_cluster').val() != null) {
-                                $('#choosing_cluster option:selected').text($('#name_cluster').val());
-                            }
-                            $('#name_cluster').val("");
-
-                        },
-                        error: (error) => {
-                            alert(error);
-                        }
-                    });
-                }
-            
-            });
-
-        });
-
-
+            <div class="cluster-description" id="p-text-id2">
+                <p class="p-text">
+                    <b>Выбросы</b><br> Это точки, не входящие в кластеры и представляющие собой отдельные объекты,
+                    отличающиеся от
+                    основной структуры данных. Они могут быть интересны для дальнейшего анализа.
+                    <hr>Их анализ помогает выявить объекты, не соответствующие общей картине, что может быть
+                    полезно для обнаружения нестандартных или неожиданных элементов в городской среде.
+                </p>
+            </div>
+        </div>
+        
+    </div>
+    <script src="{% static "js/main.js" %}">
     </script>
     {#    Добавить какой то текст   #}
-
-{% endblock %}
-{% block javascript %}
-
 
 {% endblock %}
